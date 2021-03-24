@@ -14,4 +14,8 @@ module.exports = class CadastroProdutos {
         }*/
     }
 
+    deletar(indice){
+        this.produtos.splice(indice,1);
+    }
+
 }
