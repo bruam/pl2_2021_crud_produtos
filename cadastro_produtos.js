@@ -11,10 +11,8 @@ module.exports = class CadastroProdutos {
 
     inserir(produto){
         conexao.connect(function(erro){ // callback da função que retorna erro caso não consiga conectar
-            if(erro) throw err;    
+            if(erro) throw erro;    
             //console.log("Conectado");
-        
-            //const sql = "SELECT * FROM produto";
             const sql = "INSERT INTO produto (nome, preco) VALUES (?,?)"; //values parametrizaveis (recomendado para evitar SQL inject)
             conexao.query(sql, [produto.nome,produto.preco], function(erro){
                 if(erro) throw erro;                
@@ -24,54 +22,24 @@ module.exports = class CadastroProdutos {
         });
     }
 
-    // buscarPorCodigo(codigo) {
-    //     // for(let prod of this.produtos) {
-    //     //     if(prod.codigo == codigo){
-    //     //         return prod
-    //     //     }
-    //     // }
-    //     let verificaId = function (produto){ // função com condição que será usada em find
-    //         return produto.codigo == codigo;
-    //     }
+    deletar(id){
+        conexao.connect(function(erro){ // callback da função que retorna erro caso não consiga conectar
+            if(erro) throw erro;    
+            //console.log("Conectado");
+            const sql = "DELETE FROM produto WHERE id = ?"; //values parametrizaveis (recomendado para evitar SQL inject)
+            conexao.query(sql, [id], function(erro){
+                if(erro) throw erro;
+                console.log(`Produto ${id} deletado!`);
+            });
+        
+        });
+    }
 
-    //     return this.produtos.find(verificaId); //find usa função para encontrar primeiro valor de um array que satisfaz condição da função
-
-    // }
-
-    // buscarIndicePorCodigo(codigo){ // busca indice do produto na lista pelo código, se não encontrar retorna -1
-    //     let verificaId = function (produto){
-    //         return produto.codigo == codigo;
-    //     }
-
-    //     return this.produtos.findIndex(verificaId); // retorna indice do item que satisfaz condição da função
-    // }
-
-
-    // deletar(codigo){
-    //     const indice = this.buscarIndicePorCodigo(codigo);
-    //     if(indice == -1) {
-    //         console.log("Codigo não encontrado!");
-    //     }
-    //     else {
-    //         return(this.produtos.splice(indice,1));
-    //     }
-    // }
-
-    // atualizar(codigo, produtoAtual) {
-    //     const indice = this.buscarIndicePorCodigo(codigo);
-    //     if(indice == -1) {
-    //         console.log("Codigo não encontrado!");
-    //     }
-    //     else {
-    //         this.produtos[indice] = produtoAtual;
-    //     }
-    // }
-    
     listar() {
         conexao.connect(function(erro){ // callback da função que retorna erro caso não consiga conectar
-            // if(erro) throw err;    
+            if(erro) throw erro;    
             //console.log("Conectado");
-            let result;
+            // let result;
         
             const sql = "SELECT * FROM produto";
             //const sql = "INSERT INTO produto (nome, preco) VALUES (?,?)"; //values parametrizaveis (recomendado para evitar SQL inject)
@@ -83,4 +51,39 @@ module.exports = class CadastroProdutos {
         });
         // conexao.end();
     }    
+
+    buscarPorNome(nome) {
+        conexao.connect(function(erro){ // callback da função que retorna erro caso não consiga conectar
+            if(erro) throw erro;    
+            //console.log("Conectado");
+            const sql = "SELECT * FROM produto WHERE nome LIKE ?"; //values parametrizaveis (recomendado para evitar SQL inject)
+            conexao.query(sql, [nome], function(erro, resultado){
+                if(erro) throw erro;
+                console.log(JSON.stringify(resultado));
+            });
+        
+        });
+    }
+
+    atualizar(id, coluna, novaInfo) {
+        conexao.connect(function(erro){ // callback da função que retorna erro caso não consiga conectar
+            if(erro) throw erro;    
+            //console.log("Conectado");
+            const sql = "UPDATE produto SET ? = ? WHERE id = ?"; //values parametrizaveis (recomendado para evitar SQL inject)
+            conexao.query(sql, [coluna,novaInfo,id], function(erro){
+                if(erro) throw erro;
+                console.log("Informação atualizada!");
+            });
+        
+        });
+    }
+
+    // buscarIndicePorCodigo(codigo){ // busca indice do produto na lista pelo código, se não encontrar retorna -1
+    //     let verificaId = function (produto){
+    //         return produto.codigo == codigo;
+    //     }
+
+    //     return this.produtos.findIndex(verificaId); // retorna indice do item que satisfaz condição da função
+    // }    
+    
 }

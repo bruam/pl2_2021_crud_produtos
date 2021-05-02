@@ -6,5 +6,3 @@ module.exports = class Produto { // exportando a classe diretamente
     }
 
 }
-
-//module.exports = Produto; // Exportando classe
