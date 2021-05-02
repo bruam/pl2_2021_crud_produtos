@@ -1,7 +1,6 @@
 module.exports = class Produto { // exportando a classe diretamente
 
-    constructor(codigo, nome, preco){
-        this.codigo = codigo;
+    constructor(nome, preco){
         this.nome = nome;
         this.preco = preco;
     }
